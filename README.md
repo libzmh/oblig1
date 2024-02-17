@@ -8,5 +8,3 @@ Github Brukernavn: libzmh
 Github-repo URL:https://github.com/libzmh/oblig1
 
 Fult navn: Liban Mohamed Hussein
-
-kort beskrivelse

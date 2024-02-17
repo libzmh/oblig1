@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<script>
+    function visinformation(){
+        let film=document.getElementById("Film").value;
+        let antall=document.getElementById("antall").value;
+        let fornavn=document.getElementById("fornavn").value;
+        let etternavn=document.getElementById("etternavn").value;
+        let telefonnr=document.getElementById("telefonnr").value;
+        let epost=document.getElementById("epost").value;
+        const list=[film,antall,fornavn,etternavn,telefonnr,epost]
+        let ut=film+" "+antall+" "+fornavn+" "+etternavn+" "+telefonnr+" "+epost;
+        document.getElementById("info").innerText=ut;
+    }
+    //function slettbilettene(){
+    //  document.getElementById('info').style.display='none';
+    //}
+</script>
+
+<div>
+    <form name="contactform">
+        <h1>Bestilling av kinobiletter</h1>
+        <p>Velg film</p>
+        <select id="Film">
+            <option style="display:none" value="">Choose movie here...</option>
+            <option>Django unchained</option>
+            <option>Star wars</option>
+            <option>Forest Gump</option>
+            <option>Kill Bill</option>
+        </select>
+        <p>Antall</p><input type="number" id="antall" onchange="antallvalidering()">
+        <p>Fornavn</p><input id="fornavn" type="text">
+        <p>Etternavn</p><input id="etternavn" type="text">
+        <p>Telefonnr</p><input id="telefonnr" type="text">
+        <p>E-post</p><input id="epost" type="text">
+        <input type="submit" value="Kjøp bilett" onclick="visinformation()" id>
+        <p id="info"></p>
+        <p>Alle billetter</p>
+        <button type="button" onclick="slettbilettene()">Slett alle billettene</button>
+    </form>
+</div>
+</body>
+</html>

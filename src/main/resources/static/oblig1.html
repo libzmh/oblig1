@@ -1,50 +1,170 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
-    <title>Title</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Buying Form</title>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
+
+<h2>Ticket Buying Form</h2>
+
+<form id="ticketForm">
+    <div>
+        <label for="movie">Select a Movie:</label>
+        <select id="movie" required>
+            <option value="">Select Movie</option>
+            <option value="Movie 1">Star wars</option>
+            <option value="Movie 2">Kill Bill</option>
+            <option value="Movie 3">Django unchained</option>
+            <option value="Movie 4">Snatch</option>
+        </select>
+        <span id="movieError" class="error"></span>
+    </div>
+    <div>
+        <label for="tickets">Number of Tickets:</label>
+        <input type="number" id="tickets" min="1" required>
+        <span id="ticketsError" class="error"></span>
+    </div>
+    <div>
+        <label for="firstname">First Name:</label>
+        <input type="text" id="firstname" required>
+        <span id="firstnameError" class="error"></span>
+    </div>
+    <div>
+        <label for="surname">Surname:</label>
+        <input type="text" id="surname" required>
+        <span id="surnameError" class="error"></span>
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+        <span id="emailError" class="error"></span>
+    </div>
+    <div>
+        <label for="telephone">Telephone:</label>
+        <input type="tel" id="telephone" pattern="[0-9]{8}" required>
+        <span id="telephoneError" class="error"></span>
+    </div>
+    <div>
+        <button type="button" onclick="buyTickets()">Buy Tickets</button>
+        <button type="button" onclick="deleteAllTickets()">Delete All Tickets</button>
+    </div>
+</form>
+
+<table id="ticketTable">
+    <thead>
+    <tr>
+        <th>Movie</th>
+        <th>Tickets</th>
+        <th>First Name</th>
+        <th>Surname</th>
+        <th>Email</th>
+        <th>Telephone</th>
+    </tr>
+    </thead>
+    <tbody id="ticketTableBody">
+    </tbody>
+</table>
+
 <script>
-    function visinformation(){
-        let film=document.getElementById("Film").value;
-        let antall=document.getElementById("antall").value;
-        let fornavn=document.getElementById("fornavn").value;
-        let etternavn=document.getElementById("etternavn").value;
-        let telefonnr=document.getElementById("telefonnr").value;
-        let epost=document.getElementById("epost").value;
-        const list=[film,antall,fornavn,etternavn,telefonnr,epost]
-        let ut=film+" "+antall+" "+fornavn+" "+etternavn+" "+telefonnr+" "+epost;
-        document.getElementById("info").innerText=ut;
+    let ticketsArray = [];
+
+    function buyTickets() {
+        const movie = document.getElementById('movie').value;
+        const tickets = document.getElementById('tickets').value;
+        const firstname = document.getElementById('firstname').value;
+        const surname = document.getElementById('surname').value;
+        const email = document.getElementById('email').value;
+        const telephone = document.getElementById('telephone').value;
+
+        if (!movie) {
+            document.getElementById('movieError').textContent = 'Please select a movie';
+            return;
+        } else {
+            document.getElementById('movieError').textContent = '';
+        }
+
+        if (isNaN(tickets) || tickets <= 0) {
+            document.getElementById('ticketsError').textContent = 'Please enter a valid number of tickets';
+            return;
+        } else {
+            document.getElementById('ticketsError').textContent = '';
+        }
+
+        if (!firstname) {
+            document.getElementById('firstnameError').textContent = 'First name is required';
+            return;
+        } else {
+            document.getElementById('firstnameError').textContent = '';
+        }
+
+        if (!surname) {
+            document.getElementById('surnameError').textContent = 'Surname is required';
+            return;
+        } else {
+            document.getElementById('surnameError').textContent = '';
+        }
+
+        if (!email.includes('@') || !email.includes('.')) {
+            document.getElementById('emailError').textContent = 'Please enter a valid email';
+            return;
+        } else {
+            document.getElementById('emailError').textContent = '';
+        }
+
+        if (telephone.length !== 8 || isNaN(telephone)) {
+            document.getElementById('telephoneError').textContent = 'Please enter a valid telephone number';
+            return;
+        } else {
+            document.getElementById('telephoneError').textContent = '';
+        }
+
+        const ticketObject = {
+            movie: movie,
+            tickets: tickets,
+            firstname: firstname,
+            surname: surname,
+            email: email,
+            telephone: telephone
+        };
+
+        ticketsArray.push(ticketObject);
+        displayTickets();
+        resetForm();
     }
-    //function slettbilettene(){
-    //  document.getElementById('info').style.display='none';
-    //}
+
+    function displayTickets() {
+        const tableBody = document.getElementById('ticketTableBody');
+        tableBody.innerHTML = '';
+        ticketsArray.forEach(ticket => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${ticket.movie}</td>
+                <td>${ticket.tickets}</td>
+                <td>${ticket.firstname}</td>
+                <td>${ticket.surname}</td>
+                <td>${ticket.email}</td>
+                <td>${ticket.telephone}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    function resetForm() {
+        document.getElementById('ticketForm').reset();
+    }
+
+    function deleteAllTickets() {
+        ticketsArray = [];
+        displayTickets();
+    }
 </script>
 
-<div>
-    <form name="contactform">
-        <h1>Bestilling av kinobiletter</h1>
-        <p>Velg film</p>
-        <select id="Film">
-            <option style="display:none" value="">Choose movie here...</option>
-            <option>Django unchained</option>
-            <option>Star wars</option>
-            <option>Forest Gump</option>
-            <option>Kill Bill</option>
-        </select>
-        <p>Antall</p><input type="number" id="antall" onchange="antallvalidering()">
-        <p>Fornavn</p><input id="fornavn" type="text">
-        <p>Etternavn</p><input id="etternavn" type="text">
-        <p>Telefonnr</p><input id="telefonnr" type="text">
-        <p>E-post</p><input id="epost" type="text">
-        <input type="submit" value="Kjøp bilett" onclick="visinformation()" id>
-        <p id="info"></p>
-        <p>Alle billetter</p>
-        <button type="button" onclick="slettbilettene()">Slett alle billettene</button>
-    </form>
-</div>
 </body>
 </html>
